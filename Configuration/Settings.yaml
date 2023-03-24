@@ -1,0 +1,15 @@
+Neos:
+  Neos:
+    Ui:
+      resources:
+        javascript:
+          Shel.Neos:ScopeEditor:
+            resource: resource://Skw.Neos.ScopeEditor/Public/ScopeEditor/Plugin.js
+        stylesheets:
+          Skw.Neos.ScopeEditor:
+            resource: resource://Skw.Neos.ScopeEditor/Public/ScopeEditor/Plugin.css
+
+    userInterface:
+      translation:
+        autoInclude:
+          'Skw.Neos.ScopeEditor': ['Main', 'NodeTypes/*']

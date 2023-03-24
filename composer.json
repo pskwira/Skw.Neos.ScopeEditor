@@ -1,0 +1,15 @@
+{
+  "type": "neos-package",
+  "name": "skw/neos-scopeeditor",
+  "description": "Package for Neos CMS which adds scope editor basically with two dependant numerical fields",
+  "license": "GPL-3.0",
+  "require": {
+    "neos/neos": "^8.0",
+    "neos/neos-ui": "^8.0"
+  },
+  "extra": {
+    "neos": {
+      "package-key": "Skw.Neos.ScopeEditor"
+    }
+  }
+}

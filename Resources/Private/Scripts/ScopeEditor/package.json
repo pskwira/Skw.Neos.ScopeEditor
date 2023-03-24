@@ -1,0 +1,18 @@
+{
+    "description": "Basically pure scope editor with two fields",
+    "license": "GNU GPLv3",
+    "private": true,
+    "scripts": {
+      "build": "NODE_ENV=production neos-react-scripts build",
+      "watch": "neos-react-scripts watch"
+    },
+    "devDependencies": {
+      "@neos-project/neos-ui-extensibility": "^7.0.0"
+    },
+    "neos": {
+        "buildTargetDirectory": "../../../Public/ScopeEditor"
+    },
+    "dependencies": {
+        "yarn": "^1.22.19"
+    }
+}
