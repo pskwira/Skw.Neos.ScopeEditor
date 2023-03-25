@@ -22,7 +22,7 @@ class Editor extends PureComponent {
         max: PropTypes.number,
         initial: PropTypes.number,
         step: PropTypes.number,
-		disabled: PropTypes.bool
+        disabled: PropTypes.bool
       }),
       higher: PropTypes.shape({
         label: PropTypes.string,
@@ -30,13 +30,13 @@ class Editor extends PureComponent {
         max: PropTypes.number,
         initial: PropTypes.number,
         step: PropTypes.number,
-		disabled: PropTypes.bool
+        disabled: PropTypes.bool
       }),
-        min: PropTypes.number,
-        max: PropTypes.number,
-        step: PropTypes.number,
-        disabled: PropTypes.bool,
-        type: PropTypes.oneOf(['basic', 'graphic']),
+      min: PropTypes.number,
+      max: PropTypes.number,
+      step: PropTypes.number,
+      disabled: PropTypes.bool,
+      type: PropTypes.oneOf(['basic', 'graphic']),
     })
   };
 
@@ -49,14 +49,14 @@ class Editor extends PureComponent {
         max: 100,
         initial: 0,
         step: 1,
-		disabled: false
+        disabled: false
       },
       higher: {
         min: 0,
         max: 100,
-		initial: 0,
+        initial: 0,
         step: 1,
-		disabled: false
+        disabled: false
       },
       min: 0,
       max: 100,
@@ -72,14 +72,14 @@ class Editor extends PureComponent {
     this.higherRef = React.createRef();
   }
 
-	componentDidMount() {
-		this.lowerRef.current.value	 = this.checkValue( this.props.value.lower, this.props.options.lower.initial );
-		this.higherRef.current.value = this.checkValue( this.props.value.higher, this.props.options.higher.initial );
-	}
+  componentDidMount() {
+    this.lowerRef.current.value	 = this.checkValue( this.props.value.lower, this.props.options.hasOwnProperty('lower') ? this.props.options.lower.initial : this.props.options.initial );
+    this.higherRef.current.value = this.checkValue( this.props.value.higher, this.props.options.hasOwnProperty('higher') ? this.props.options.higher.initial : this.props.options.initial );
+  }
 
-	checkValue(value, defaultValue) {
-		return ( typeof value !== 'undefined' && value ) ? value : defaultValue;
-	}
+  checkValue(value, defaultValue) {
+    return ( typeof value !== 'undefined' && value ) ? value : defaultValue;
+  }
 
   handleChange = event => {
     const {options} = this.props;
@@ -95,24 +95,24 @@ class Editor extends PureComponent {
     let highValue   = parseInt(this.higherRef.current.value);
 
     if (target.classList.value === 'lower' ) {
-			let lowMin = options.lower.min ? options.lower.min : options.min;
-			let lowMax = options.lower.max ? options.lower.max : options.max;
+      let lowMin = options.lower.min ? options.lower.min : options.min;
+      let lowMax = options.lower.max ? options.lower.max : options.max;
 
-			value = Math.min(lowMax, Math.max(lowMin, value));
+      value = Math.min(lowMax, Math.max(lowMin, value));
 
       if ( value > highValue ) {
-				this.lowerRef.current.value = highValue;
-			}
+        this.lowerRef.current.value = highValue;
+      }
     }
 
     if (target.classList.value === 'higher' ) {
-			let highMin = options.higher.min ? options.higher.min : options.min;
-			let highMax = options.higher.max ? options.higher.max : options.max;
+      let highMin = options.higher.min ? options.higher.min : options.min;
+      let highMax = options.higher.max ? options.higher.max : options.max;
 
       value = Math.min(highMax, Math.max(highMin, value));
 
       if ( lowValue > value ) {
-				this.higherRef.current.value = lowValue;
+        this.higherRef.current.value = lowValue;
       }
     }
 
@@ -130,34 +130,44 @@ class Editor extends PureComponent {
   render() {
     const options = {...this.constructor.defaultProps.options, ...this.props.options};
 
-		const lowerInputLabel = this.props.i18nRegistry.translate( options.lower.label ? options.lower.label :  'Skw.Neos.ScopeEditor:Main:scopeEditorMinimum');
-		const higherInputLabel = this.props.i18nRegistry.translate( options.higher.label ? options.higher.label : 'Skw.Neos.ScopeEditor:Main:scopeEditorMaximum');
+    const lowerInputLabel = this.props.i18nRegistry.translate( options.lower.label ? options.lower.label :  'Skw.Neos.ScopeEditor:Main:scopeEditorMinimum');
+    const higherInputLabel = this.props.i18nRegistry.translate( options.higher.label ? options.higher.label : 'Skw.Neos.ScopeEditor:Main:scopeEditorMaximum');
+
+    const lowerMin = options.hasOwnProperty('lower') && options.lower.min ? options.lower.min : options.min;
+    const lowerMax = options.hasOwnProperty('lower') && options.lower.max ? options.lower.max : options.max;
+    const lowerStep = options.hasOwnProperty('lower') && options.lower.step ? options.lower.step : options.step;
+    const lowerDisbaled = options.hasOwnProperty('lower') && options.lower.disabled ? options.lower.disabled : options.disabled;
+
+    const higherMin = options.hasOwnProperty('higher') && options.higher.min ? options.higher.min : options.min;
+    const higherMax = options.hasOwnProperty('higher') && options.higher.max ? options.higher.max : options.max;
+    const higherStep = options.hasOwnProperty('higher') && options.higher.step ? options.higher.step : options.step;
+    const higherDisbaled = options.hasOwnProperty('higher') && options.higher.disabled ? options.higher.disabled : options.disabled;
 
     return (
       <div className={style.scopeEditor + (options.disabled ? ' ' + style.scopeEditorDisabled : '')}>
         <div className={style.grid}>
-					<div title={lowerInputLabel}>{lowerInputLabel}</div>
-					<div title={higherInputLabel}>{higherInputLabel}</div>
+          <div title={lowerInputLabel}>{lowerInputLabel}</div>
+          <div title={higherInputLabel}>{higherInputLabel}</div>
           <div className={(options.lower.disabled ? ' ' + style.scopeEditorDisabled : '')}>
             <input
               type="number"
-              min={options.lower.min ? options.lower.min : options.min}
-              max={options.lower.max ? options.lower.max : options.max}
-              step={options.lower.step ? options.lower.step : options.step}
+              min={lowerMin}
+              max={lowerMax}
+              step={lowerStep}
               className="lower"
-							disabled={options.lower.disabled || options.disabled}
-							onChange={this.handleChange}
+              disabled={lowerDisbaled}
+              onChange={this.handleChange}
               ref={this.lowerRef}
             />
           </div>
-					<div className={(options.higher.disabled ? ' ' + style.scopeEditorDisabled : '')}>
+          <div className={(options.higher.disabled ? ' ' + style.scopeEditorDisabled : '')}>
             <input
               type="number"
-              min={options.higher.min ? options.higher.min : options.min}
-              max={options.higher.max ? options.higher.max : options.max}
-              step={options.higher.step ? options.higher.step : options.step}
+              min={higherMin}
+              max={higherMax}
+              step={higherStep}
               className="higher"
-							disabled={options.higher.disabled || options.disabled}
+              disabled={higherDisbaled}
               onChange={this.handleChange}
               ref={this.higherRef}
             />
@@ -169,3 +179,4 @@ class Editor extends PureComponent {
 }
 
 export default Editor;
+
